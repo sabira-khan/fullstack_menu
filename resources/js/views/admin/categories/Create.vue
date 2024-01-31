@@ -6,10 +6,10 @@
                     <form @submit.prevent="submitForm">
                         <!-- Title -->
                         <div class="mb-3">
-                            <label for="post-name" class="form-label">
-                                Title
+                            <label for="category-name" class="form-label">
+                                Category Title *
                             </label>
-                            <input v-model="category.name" id="post-name" type="text" class="form-control">
+                            <input v-model="category.name" id="category-name" type="text" class="form-control">
                             <div class="text-danger mt-1">
                                 {{ errors.name }}
                             </div>
@@ -19,6 +19,29 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Level -->
+                        <input v-model="category.level" type="hidden" value="0">
+
+                        <!-- Parent ID -->
+                        <input v-model="category.parent_id" id="parent-id" type="hidden" class="form-control">
+
+                        <!-- Discount -->
+                        <div class="mb-3">
+                            <label for="discount" class="form-label">
+                                Discount
+                            </label>
+                            <input v-model="category.discount" id="discount" type="text" class="form-control">
+                            <div class="text-danger mt-1">
+                                {{ errors.discount }}
+                            </div>
+                            <div class="text-danger mt-1">
+                                <div v-for="message in validationErrors?.discount">
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Buttons -->
                         <div class="mt-4">
                             <button :disabled="isLoading" class="btn btn-primary">
@@ -33,27 +56,41 @@
         </div>
     </div>
 </template>
-<script setup>
-    import { reactive } from "vue";
-    import useCategories from "../../../composables/categories";
-    import { useForm, useField, defineRule } from "vee-validate";
-    import { required, min } from "@/validation/rules"
-    defineRule('required', required)
-    defineRule('min', min);
 
-    // Define a validation schema
-    const schema = {
-        name: 'required|min:3'
-    }
-    // Create a form context with the validation schema
-    const { validate, errors } = useForm({ validationSchema: schema })
-    // Define actual fields for validation
-    const { value: name } = useField('name', null, { initialValue: '' });
-    const { storeCategory, validationErrors, isLoading } = useCategories()
-    const category = reactive({
-        name
-    })
-    function submitForm() {
-        validate().then(form => { if (form.valid) storeCategory(category) })
-    }
+<script setup>
+import { reactive } from "vue";
+import useCategories from "../../../composables/categories";
+import { useForm, useField, defineRule } from "vee-validate";
+import { required, min } from "@/validation/rules";
+
+defineRule('required', required);
+defineRule('min', min);
+
+const schema = {
+    name: 'required|min:3',
+    discount: 'min:0'
+};
+
+const { validate, errors } = useForm({ validationSchema: schema });
+
+
+const { value: name } = useField('name', null, { initialValue: '' });
+const { value: discount } = useField('discount', null, { initialValue: null });
+
+const { storeCategory, validationErrors, isLoading } = useCategories();
+
+const category = reactive({
+    name,
+    level: 0,
+    parent_id: null,
+    discount
+});
+
+function submitForm() {
+    validate().then(form => {
+        if (form.valid) {
+            storeCategory(category);
+        }
+    });
+}
 </script>
