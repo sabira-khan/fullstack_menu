@@ -2,29 +2,26 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class ItemResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array<string, mixed>
      */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'parent_id' => $this->parent_id,
-            'level' => $this->level,
+            'cat_id' => $this->cat_id,
             'discount_id' => $this->discount_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'children' => CategoryResource::collection($this->whenLoaded('children')),
-            'items' => ItemResource::collection($this->whenLoaded('items')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
             'discount' => new DiscountResource($this->whenLoaded('discount')),
         ];
     }

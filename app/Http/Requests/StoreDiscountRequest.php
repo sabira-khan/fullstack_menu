@@ -4,30 +4,27 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends FormRequest
+class StoreDiscountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id',
-            'level' => 'required|integer|min:0',
-            'discount_id' => 'nullable|exists:discounts,id',
+            'amount' => 'required|numeric|min:0',
+            'type' => 'required|in: Menu,Category,Item',
         ];
     }
 }
