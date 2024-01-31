@@ -26,7 +26,7 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
-            'level' => 'required|integer|min:0',
+            'level' => 'required|integer|min:0|max:4', //0 if category, plus 4 subcategories
             'discount_id' => 'nullable|exists:discounts,id',
         ];
     }

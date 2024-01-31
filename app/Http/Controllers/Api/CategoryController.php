@@ -20,18 +20,16 @@ class CategoryController extends Controller
         if (!in_array($orderDirection, ['asc', 'desc'])) {
             $orderDirection = 'desc';
         }
-        $categories = Category::
-            when(request('search_id'), function ($query) {
-                $query->where('id', request('search_id'));
-            })
+        $categories = Category::when(request('search_id'), function ($query) {
+            $query->where('id', request('search_id'));
+        })
             ->when(request('search_title'), function ($query) {
-                $query->where('name', 'like', '%'.request('search_title').'%');
+                $query->where('name', 'like', '%' . request('search_title') . '%');
             })
             ->when(request('search_global'), function ($query) {
-                $query->where(function($q) {
+                $query->where(function ($q) {
                     $q->where('id', request('search_global'))
-                        ->orWhere('name', 'like', '%'.request('search_global').'%');
-
+                        ->orWhere('name', 'like', '%' . request('search_global') . '%');
                 });
             })
             ->orderBy($orderColumn, $orderDirection)
@@ -42,7 +40,16 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $this->authorize('category-create');
-        $category = Category::create($request->validated());
+
+        // Validate and create category
+        $validatedData = $request->validated();
+
+        $parentCategory = Category::find($validatedData['parent_id']);
+
+        if ($parentCategory && $parentCategory->items()->exists()) {
+            return response()->json(['error' => 'Cannot create a category under a parent with Item children.'], 422);
+        }
+        $category = Category::create($validatedData);
 
         return new CategoryResource($category);
     }
@@ -55,13 +62,27 @@ class CategoryController extends Controller
 
     public function update(Category $category, StoreCategoryRequest $request)
     {
+
         $this->authorize('category-edit');
-        $category->update($request->validated());
+
+        // Validate and update category
+        $validatedData = $request->validated();
+
+        $parentCategory = Category::find($validatedData['parent_id']);
+
+        // If the parent is being updated, check if it has item children
+        if ($parentCategory && $parentCategory->items()->exists()) {
+            return response()->json(['error' => 'Cannot update the parent category with Item children.'], 422);
+        }
+
+        $category->update($validatedData);
+
 
         return new CategoryResource($category);
     }
 
-    public function destroy(Category $category) {
+    public function destroy(Category $category)
+    {
         $this->authorize('category-delete');
         $category->delete();
 
