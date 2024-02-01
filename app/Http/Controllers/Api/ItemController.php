@@ -64,4 +64,9 @@ class ItemController extends Controller
 
         return response()->json(['message' => 'Item deleted successfully']);
     }
+
+    public function getList()
+    {
+        return ItemResource::collection(Item::all());
+    }
 }

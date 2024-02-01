@@ -103,6 +103,47 @@ export default [
                 component: () => import("../views/admin/categories/Edit.vue"),
                 meta: { breadCrumb: "Edit Category" },
             },
+
+            {
+                name: "subcategories.index",
+                path: "subcategories",
+                component: () =>
+                    import("../views/admin/subcategories/Index.vue"),
+                meta: { breadCrumb: "Subcategories" },
+            },
+            {
+                name: "subcategories.create",
+                path: "subcategories/create",
+                component: () =>
+                    import("../views/admin/subcategories/Create.vue"),
+                meta: { breadCrumb: "Add New Subcategory" },
+            },
+            {
+                name: "subcategories.edit",
+                path: "subcategories/edit/:id",
+                component: () =>
+                    import("../views/admin/subcategories/Edit.vue"),
+                meta: { breadCrumb: "Edit Subcategory" },
+            },
+            {
+                name: "items.index",
+                path: "items",
+                component: () => import("../views/admin/items/Index.vue"),
+                meta: { breadCrumb: "Subcategories" },
+            },
+            {
+                name: "items.create",
+                path: "items/create",
+                component: () => import("../views/admin/items/Create.vue"),
+                meta: { breadCrumb: "Add New Subcategory" },
+            },
+            {
+                name: "items.edit",
+                path: "items/edit/:id",
+                component: () =>
+                    import("../views/admin/subcategories/Edit.vue"),
+                meta: { breadCrumb: "Edit Subcategory" },
+            },
             {
                 name: "permissions.index",
                 path: "permissions",

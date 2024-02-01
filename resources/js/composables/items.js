@@ -1,10 +1,10 @@
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
 
-export default function useCategories() {
-    const categories = ref([]);
-    const categoryList = ref([]);
-    const category = ref({
+export default function useItems() {
+    const items = ref([]);
+    const itemList = ref([]);
+    const item = ref({
         name: "",
     });
 
@@ -13,7 +13,7 @@ export default function useCategories() {
     const isLoading = ref(false);
     const swal = inject("$swal");
 
-    const getCategories = async (
+    const getItems = async (
         page = 1,
         search_id = "",
         search_title = "",
@@ -23,7 +23,7 @@ export default function useCategories() {
     ) => {
         axios
             .get(
-                "/api/categories?page=" +
+                "/api/items?page=" +
                     page +
                     "&search_id=" +
                     search_id +
@@ -37,29 +37,29 @@ export default function useCategories() {
                     order_direction
             )
             .then((response) => {
-                categories.value = response.data;
+                items.value = response.data;
             });
     };
 
-    const getCategory = async (id) => {
-        axios.get("/api/categories/" + id).then((response) => {
-            category.value = response.data.data;
+    const getItem = async (id) => {
+        axios.get("/api/items/" + id).then((response) => {
+            item.value = response.data.data;
         });
     };
 
-    const storeCategory = async (category) => {
+    const storeItem = async (item) => {
         if (isLoading.value) return;
 
         isLoading.value = true;
         validationErrors.value = {};
 
         axios
-            .post("/api/categories", category)
+            .post("/api/items", item)
             .then((response) => {
-                router.push({ name: "categories.index" });
+                router.push({ name: "items.index" });
                 swal({
                     icon: "success",
-                    title: "Category saved successfully",
+                    title: "Item saved successfully",
                 });
             })
             .catch((error) => {
@@ -70,19 +70,19 @@ export default function useCategories() {
             .finally(() => (isLoading.value = false));
     };
 
-    const updateCategory = async (category) => {
+    const updateItem = async (item) => {
         if (isLoading.value) return;
 
         isLoading.value = true;
         validationErrors.value = {};
 
         axios
-            .put("/api/categories/" + category.id, category)
+            .put("/api/items/" + item.id, item)
             .then((response) => {
-                router.push({ name: "categories.index" });
+                router.push({ name: "items.index" });
                 swal({
                     icon: "success",
-                    title: "Category updated successfully",
+                    title: "Item updated successfully",
                 });
             })
             .catch((error) => {
@@ -93,7 +93,7 @@ export default function useCategories() {
             .finally(() => (isLoading.value = false));
     };
 
-    const deleteCategory = async (id) => {
+    const deleteItem = async (id) => {
         swal({
             title: "Are you sure?",
             text: "You won't be able to revert this action!",
@@ -107,13 +107,13 @@ export default function useCategories() {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .delete("/api/categories/" + id)
+                    .delete("/api/items/" + id)
                     .then((response) => {
-                        getCategories();
-                        router.push({ name: "categories.index" });
+                        getItems();
+                        router.push({ name: "items.index" });
                         swal({
                             icon: "success",
-                            title: "Category deleted successfully",
+                            title: "Item deleted successfully",
                         });
                     })
                     .catch((error) => {
@@ -126,67 +126,33 @@ export default function useCategories() {
         });
     };
 
-    const deleteSubcategory = async (id) => {
-        swal({
-            title: "Are you sure?",
-            text: "You won't be able to revert this action!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            confirmButtonColor: "#ef4444",
-            timer: 20000,
-            timerProgressBar: true,
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios
-                    .delete("/api/categories/" + id)
-                    .then((response) => {
-                        getCategories();
-                        router.push({ name: "subcategories.index" });
-                        swal({
-                            icon: "success",
-                            title: "Category deleted successfully",
-                        });
-                    })
-                    .catch((error) => {
-                        swal({
-                            icon: "error",
-                            title: "Something went wrong",
-                        });
-                    });
-            }
+    const getItemList = async () => {
+        axios.get("/api/item-list").then((response) => {
+            itemList.value = response.data.data;
         });
     };
 
-    const getCategoryList = async () => {
-        axios.get("/api/category-list").then((response) => {
-            categoryList.value = response.data.data;
-        });
-    };
-
-    const getCategoryList2 = async () => {
+    const getItemList2 = async () => {
         try {
-            const response = await axios.get("/api/category-list");
-            categoryList.value = response.data.data;
+            const response = await axios.get("/api/item-list");
+            itemList.value = response.data.data;
         } catch (error) {
-            console.error("Error fetching category list:", error);
+            console.error("Error fetching item list:", error);
             // Handle the error as needed
         }
     };
 
     return {
-        categoryList,
-        categories,
-        category,
-        getCategories,
-        getCategoryList,
-        getCategoryList2,
-        getCategory,
-        storeCategory,
-        updateCategory,
-        deleteCategory,
-        deleteSubcategory,
+        itemList,
+        items,
+        item,
+        getItems,
+        getItemList,
+        getItemList2,
+        getItem,
+        storeItem,
+        updateItem,
+        deleteItem,
         validationErrors,
         isLoading,
     };
