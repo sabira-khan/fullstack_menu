@@ -93,4 +93,35 @@ class CategoryController extends Controller
     {
         return CategoryResource::collection(Category::all());
     }
+
+    public function getSubcategories()
+    {
+        $orderColumn = request('order_column', 'created_at');
+        if (!in_array($orderColumn, ['id', 'name', 'created_at'])) {
+            $orderColumn = 'created_at';
+        }
+
+        $orderDirection = request('order_direction', 'desc');
+        if (!in_array($orderDirection, ['asc', 'desc'])) {
+            $orderDirection = 'desc';
+        }
+
+        $categories = Category::when(request('search_id'), function ($query) {
+            $query->where('id', request('search_id'));
+        })
+            ->when(request('search_title'), function ($query) {
+                $query->where('name', 'like', '%' . request('search_title') . '%');
+            })
+            ->when(request('search_global'), function ($query) {
+                $query->where(function ($q) {
+                    $q->where('id', request('search_global'))
+                        ->orWhere('name', 'like', '%' . request('search_global') . '%');
+                });
+            })
+            ->where('level', '>', 0) // Add this condition for level > 0
+            ->orderBy($orderColumn, $orderDirection)
+            ->paginate(50);
+
+        return CategoryResource::collection($categories);
+    }
 }

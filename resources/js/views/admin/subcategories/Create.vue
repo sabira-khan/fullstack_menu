@@ -4,21 +4,6 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <form @submit.prevent="submitForm">
-                        <!-- Title -->
-                        <div class="mb-3">
-                            <label for="category-name" class="form-label">
-                                SubCategory Title *
-                            </label>
-                            <input v-model="category.name" id="category-name" type="text" class="form-control">
-                            <div class="text-danger mt-1">
-                                {{ errors.name }}
-                            </div>
-                            <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.name">
-                                    {{ message }}
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Parent Category Dropdown -->
                         <div class="mb-3">
@@ -38,6 +23,22 @@
                             </div>
                             <div class="text-danger mt-1">
                                 <div v-for="message in validationErrors?.parent_id">
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label for="category-name" class="form-label">
+                                SubCategory Title *
+                            </label>
+                            <input v-model="category.name" id="category-name" type="text" class="form-control">
+                            <div class="text-danger mt-1">
+                                {{ errors.name }}
+                            </div>
+                            <div class="text-danger mt-1">
+                                <div v-for="message in validationErrors?.name">
                                     {{ message }}
                                 </div>
                             </div>

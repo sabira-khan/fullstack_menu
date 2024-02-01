@@ -133,7 +133,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import useCategories from "../../../composables/categories";
+import useCategories from "../../../composables/subcategories";
 import { useAbility } from '@casl/vue'
 
 const search_id = ref('')
