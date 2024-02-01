@@ -11,7 +11,7 @@ class StoreItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class StoreItemRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'cat_id' => 'required|exists:categories,id',
-            'discount_id' => 'nullable|exists:discounts,id',
+            'discount' => 'nullable',
         ];
     }
 }

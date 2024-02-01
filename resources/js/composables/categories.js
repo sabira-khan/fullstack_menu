@@ -143,7 +143,7 @@ export default function useCategories() {
                     .delete("/api/categories/" + id)
                     .then((response) => {
                         getCategories();
-                        router.push({ name: "subcategories.index" });
+                        router.push({ name: "categories.index" });
                         swal({
                             icon: "success",
                             title: "Category deleted successfully",

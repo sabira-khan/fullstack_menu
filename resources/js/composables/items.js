@@ -127,7 +127,7 @@ export default function useItems() {
     };
 
     const getLastChildrenList = async () => {
-        axios.get("/api/item-list").then((response) => {
+        axios.get("/api/item-parents").then((response) => {
             itemList.value = response.data.data;
             console.log(response);
         });

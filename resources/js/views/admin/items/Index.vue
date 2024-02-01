@@ -4,7 +4,7 @@
             <div class="card border-0">
                 <div class="card-header bg-transparent">
                     <h5 class="float-start">Items</h5>
-                    <router-link v-if="can('category-create')" :to="{ name: 'items.create' }"
+                    <router-link v-if="can('item-create')" :to="{ name: 'items.create' }"
                         class="btn btn-primary btn-sm float-end">
                         Create Item
                     </router-link>

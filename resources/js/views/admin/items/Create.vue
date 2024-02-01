@@ -10,8 +10,7 @@
                             <label for="parent-item" class="form-label">
                                 Parent Category *
                             </label>
-                            <select v-model="item.cat_id" id="parent-item" class="form-select"
-                                @change="logSelectedCategoryLevel(item.cat_id)">
+                            <select v-model="item.cat_id" id="parent-item" class="form-select">
                                 <option value="" disabled>Select Parent Category</option>
                                 <option v-for="parentCategory in itemList" :value="parentCategory.id"
                                     :key="parentCategory.id">
@@ -108,25 +107,12 @@ watchEffect(() => itemList, (newCategoryList) => {
     cat_id.rules = newCategoryList.length ? 'required' : '';
 });
 
-watchEffect(() => {
-    logSelectedCategoryLevel(cat_id.value);
-});
-
-function logSelectedCategoryLevel(selectedCategoryId) {
-    const selectedCategory = itemList.value.find(c => c.id === selectedCategoryId);
-
-    if (selectedCategory) {
-        item.value.level = selectedCategory.level + 1;
-        console.log(`Selected Category Level: ${item.value.level}`);
-    }
-}
-
 function submitForm() {
     nextTick(() => {
         console.log(item.value);
         // validate().then((isValid) => {
         //     if (isValid) {
-        // storeItem(item.value);
+        storeItem(item.value);
         //     }
         // });
     });

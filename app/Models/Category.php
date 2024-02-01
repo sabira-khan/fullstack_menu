@@ -31,20 +31,9 @@ class Category extends Model
 
     public function getList()
     {
-        // Check if it's a top-level category
-        if ($this->parent_id === null) {
-            // Retrieve only the leaf nodes (lowest level children)
-            $descendantsAndSelf = $this->getDescendantsAndSelf();
-
-            $filteredDescendants = $descendantsAndSelf->filter(function ($category) {
-                return $category->children->isEmpty();
-            });
-
-            return CategoryResource::collection($filteredDescendants);
-        } else {
-            // Retrieve top-level categories
-            return CategoryResource::collection($this->get());
-        }
+        // Retrieve only leaf categories to add items
+        $leafCategories = $this->isLeaf()->get();
+        return CategoryResource::collection($leafCategories);
     }
 
     public function discounts()

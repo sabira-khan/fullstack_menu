@@ -53,9 +53,9 @@ class ItemController extends Controller
         $category = Category::find($validatedData['cat_id']);
 
         // Check if the category has children of the Category model
-        if ($category && $category->children()->exists()) {
-            return response()->json(['error' => 'Cannot create an item under a category with Category children.'], 422);
-        }
+        // if ($category && $category->children()->exists()) {
+        //     return response()->json(['error' => 'Cannot create an item under a category with Category children.'], 422);
+        // }
 
         $item = Item::create($validatedData);
 
