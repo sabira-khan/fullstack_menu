@@ -43,6 +43,22 @@
                             </div>
                         </div>
 
+                        <!-- Amount -->
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">
+                                Amount
+                            </label>
+                            <input v-model="item.amount" id="amount" type="text" class="form-control">
+                            <div class="text-danger mt-1">
+                                {{ errors.amount }}
+                            </div>
+                            <div class="text-danger mt-1">
+                                <div v-for="message in validationErrors?.amount">
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Discount -->
                         <div class="mb-3">
                             <label for="discount" class="form-label">
@@ -89,12 +105,15 @@ const { value: name, errorMessage: nameError } = useField('name', 'required');
 
 const { value: discount, errorMessage: discountError } = useField('discount', 'min:0');
 
+const { value: amount, errorMessage: amountError } = useField('amount', 'min:0');
+
 const { storeItem, validationErrors, isLoading, getLastChildrenList, itemList } = useItems();
 
 const item = ref({
     name: '',
     cat_id: null,
     discount: null,
+    amount: 0
 });
 
 onMounted(() => {

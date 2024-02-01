@@ -24,7 +24,8 @@ class StoreItemRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'cat_id' => 'required|exists:categories,id',
-            'discount' => 'nullable',
+            'discount_id' => 'nullable',
+            'amount' => 'nullable'
         ];
     }
 }
