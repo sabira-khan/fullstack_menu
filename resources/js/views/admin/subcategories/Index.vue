@@ -10,31 +10,36 @@
                     </router-link>
                 </div>
                 <div class="card-body shadow-sm">
-                    <div class="mb-4">
-                        <input v-model="search_global" type="text" placeholder="Search..." class="form-control w-25">
-                    </div>
+
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
+
                                 <tr>
-                                    <th class="px-6 py-3 bg-gray-50 text-left">
+                                    <th class="px-2 py-3 bg-gray-50 text-left">
+                                        <input v-model="search_global" type="text" placeholder="Search..."
+                                            class="form-control">
+                                    </th>
+                                    <th class="px-2 py-3 bg-gray-50 text-left">
                                         <input v-model="search_id" type="text" class="inline-block mt-1 form-control"
                                             placeholder="Filter by ID">
                                     </th>
-                                    <th class="px-6 py-3 bg-gray-50 text-left">
+                                    <th class="px-2 py-3 bg-gray-50 text-left">
                                         <input v-model="search_title" type="text" class="inline-block mt-1 form-control"
                                             placeholder="Filter by Title">
                                     </th>
                                     <th class="px-6 py-3 text-start"></th>
                                     <th class="px-6 py-3 text-start"></th>
                                 </tr>
+
                                 <tr>
                                     <th class="px-6 py-3 text-start">
-                                        <div class="flex flex-row" @click="updateOrdering('id')">
-                                            <div class="font-medium text-uppercase"
+                                        <div class="flex flex-row" @click="updateOrdering('id')" style="display: flex;">
+                                            <div class="font-medium"
                                                 :class="{ 'font-bold text-blue-600': orderColumn === 'id' }">
                                                 ID
                                             </div>
+                                            &nbsp;
                                             <div class="select-none">
                                                 <span :class="{
                                                     'text-blue-600': orderDirection === 'asc' && orderColumn === 'id',
@@ -48,11 +53,12 @@
                                         </div>
                                     </th>
                                     <th class="px-6 py-3 text-left">
-                                        <div class="flex flex-row" @click="updateOrdering('title')">
-                                            <div class="font-medium text-uppercase"
+                                        <div class="flex flex-row" @click="updateOrdering('title')" style="display: flex;">
+                                            <div class="font-medium"
                                                 :class="{ 'font-bold text-blue-600': orderColumn === 'title' }">
                                                 Title
                                             </div>
+                                            &nbsp;
                                             <div class="select-none">
                                                 <span :class="{
                                                     'text-blue-600': orderDirection === 'asc' && orderColumn === 'title',
@@ -67,11 +73,12 @@
                                     </th>
                                     <th class="px-6 py-3 bg-gray-50 text-left">
                                         <div class="flex flex-row items-center justify-between cursor-pointer"
-                                            @click="updateOrdering('created_at')">
+                                            style="display: flex;" @click="updateOrdering('created_at')">
                                             <div class="leading-4 font-medium text-gray-500 uppercase tracking-wider"
                                                 :class="{ 'font-bold text-blue-600': orderColumn === 'created_at' }">
                                                 Created at
                                             </div>
+                                            &nbsp;
                                             <div class="select-none">
                                                 <span :class="{
                                                     'text-blue-600': orderDirection === 'asc' && orderColumn === 'created_at',
