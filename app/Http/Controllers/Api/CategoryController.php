@@ -124,4 +124,15 @@ class CategoryController extends Controller
 
         return CategoryResource::collection($categories);
     }
+
+    public function getLastChildren()
+    {
+        $category = new Category();
+        // Call the getList method on the instance
+        $categories = $category->getList();
+
+        // dd($categories);
+
+        return CategoryResource::collection($categories);
+    }
 }

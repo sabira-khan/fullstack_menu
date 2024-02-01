@@ -126,20 +126,11 @@ export default function useItems() {
         });
     };
 
-    const getItemList = async () => {
+    const getLastChildrenList = async () => {
         axios.get("/api/item-list").then((response) => {
             itemList.value = response.data.data;
+            console.log(response);
         });
-    };
-
-    const getItemList2 = async () => {
-        try {
-            const response = await axios.get("/api/item-list");
-            itemList.value = response.data.data;
-        } catch (error) {
-            console.error("Error fetching item list:", error);
-            // Handle the error as needed
-        }
     };
 
     return {
@@ -147,8 +138,7 @@ export default function useItems() {
         items,
         item,
         getItems,
-        getItemList,
-        getItemList2,
+        getLastChildrenList,
         getItem,
         storeItem,
         updateItem,

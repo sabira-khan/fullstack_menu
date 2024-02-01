@@ -131,7 +131,7 @@ function submitForm() {
         console.log(category.value);
         // validate().then((isValid) => {
         //     if (isValid) {
-        //         storeCategory(category.value);
+        storeCategory(category.value);
         //     }
         // });
     });

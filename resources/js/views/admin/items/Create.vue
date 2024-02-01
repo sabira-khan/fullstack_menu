@@ -4,12 +4,36 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <form @submit.prevent="submitForm">
+
+                        <!-- Parent Category Dropdown -->
+                        <div class="mb-3">
+                            <label for="parent-item" class="form-label">
+                                Parent Category *
+                            </label>
+                            <select v-model="item.cat_id" id="parent-item" class="form-select"
+                                @change="logSelectedCategoryLevel(item.cat_id)">
+                                <option value="" disabled>Select Parent Category</option>
+                                <option v-for="parentCategory in itemList" :value="parentCategory.id"
+                                    :key="parentCategory.id">
+                                    {{ parentCategory.name }}
+                                </option>
+                            </select>
+                            <div class="text-danger mt-1">
+                                {{ errors.cat_id }}
+                            </div>
+                            <div class="text-danger mt-1">
+                                <div v-for="message in validationErrors?.cat_id">
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Title -->
                         <div class="mb-3">
-                            <label for="category-name" class="form-label">
-                                Category Title *
+                            <label for="item-name" class="form-label">
+                                Item Title *
                             </label>
-                            <input v-model="category.name" id="category-name" type="text" class="form-control">
+                            <input v-model="item.name" id="item-name" type="text" class="form-control">
                             <div class="text-danger mt-1">
                                 {{ errors.name }}
                             </div>
@@ -20,18 +44,12 @@
                             </div>
                         </div>
 
-                        <!-- Level -->
-                        <input v-model="category.level" type="hidden" value="0">
-
-                        <!-- Parent ID -->
-                        <input v-model="category.parent_id" id="parent-id" type="hidden" class="form-control">
-
                         <!-- Discount -->
                         <div class="mb-3">
                             <label for="discount" class="form-label">
                                 Discount
                             </label>
-                            <input v-model="category.discount" id="discount" type="text" class="form-control">
+                            <input v-model="item.discount" id="discount" type="text" class="form-control">
                             <div class="text-danger mt-1">
                                 {{ errors.discount }}
                             </div>
@@ -58,39 +76,60 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
-import useCategories from "../../../composables/categories";
+import { ref, onMounted, nextTick, watchEffect } from "vue";
+import useItems from "../../../composables/items";
 import { useForm, useField, defineRule } from "vee-validate";
 import { required, min } from "@/validation/rules";
 
 defineRule('required', required);
 defineRule('min', min);
 
-const schema = {
-    name: 'required|min:3',
-    discount: 'min:0'
-};
+const { validate, errors } = useForm();
 
-const { validate, errors } = useForm({ validationSchema: schema });
+const { value: name, errorMessage: nameError } = useField('name', 'required');
 
+const { value: discount, errorMessage: discountError } = useField('discount', 'min:0');
 
-const { value: name } = useField('name', null, { initialValue: '' });
-const { value: discount } = useField('discount', null, { initialValue: null });
+const { storeItem, validationErrors, isLoading, getLastChildrenList, itemList } = useItems();
 
-const { storeCategory, validationErrors, isLoading } = useCategories();
-
-const category = reactive({
-    name,
-    level: 0,
-    parent_id: null,
-    discount
+const item = ref({
+    name: '',
+    cat_id: null,
+    discount: null,
 });
 
+onMounted(() => {
+    getLastChildrenList();
+});
+// Use ref for item.cat_id
+const cat_id = ref(item.value.cat_id);
+
+watchEffect(() => itemList, (newCategoryList) => {
+    cat_id.rules = newCategoryList.length ? 'required' : '';
+});
+
+watchEffect(() => {
+    logSelectedCategoryLevel(cat_id.value);
+});
+
+function logSelectedCategoryLevel(selectedCategoryId) {
+    const selectedCategory = itemList.value.find(c => c.id === selectedCategoryId);
+
+    if (selectedCategory) {
+        item.value.level = selectedCategory.level + 1;
+        console.log(`Selected Category Level: ${item.value.level}`);
+    }
+}
+
 function submitForm() {
-    validate().then(form => {
-        if (form.valid) {
-            storeCategory(category);
-        }
+    nextTick(() => {
+        console.log(item.value);
+        // validate().then((isValid) => {
+        //     if (isValid) {
+        // storeItem(item.value);
+        //     }
+        // });
     });
 }
+
 </script>

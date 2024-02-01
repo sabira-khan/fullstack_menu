@@ -43,5 +43,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::get('category-list', [CategoryController::class, 'getList']);
-Route::get('item-list', [ItemController::class, 'itemList']);
+Route::get('item-list', [ItemController::class, 'getList']);
 Route::get('/subcategories', [CategoryController::class, 'getSubcategories']);
+Route::get('/item-parents', [CategoryController::class, 'getLastChildren']);

@@ -56,7 +56,7 @@ export default function useCategories() {
         axios
             .post("/api/subcategories", category)
             .then((response) => {
-                router.push({ name: "categories.index" });
+                router.push({ name: "subcategories.index" });
                 swal({
                     icon: "success",
                     title: "Category saved successfully",
@@ -79,7 +79,7 @@ export default function useCategories() {
         axios
             .put("/api/subcategories/" + category.id, category)
             .then((response) => {
-                router.push({ name: "categories.index" });
+                router.push({ name: "subcategories.index" });
                 swal({
                     icon: "success",
                     title: "Category updated successfully",
@@ -110,7 +110,7 @@ export default function useCategories() {
                     .delete("/api/subcategories/" + id)
                     .then((response) => {
                         getCategories();
-                        router.push({ name: "categories.index" });
+                        router.push({ name: "subcategories.index" });
                         swal({
                             icon: "success",
                             title: "Category deleted successfully",
@@ -143,7 +143,7 @@ export default function useCategories() {
                     .delete("/api/subcategories/" + id)
                     .then((response) => {
                         getCategories();
-                        router.push({ name: "subcategories.index" });
+                        router.push({ name: "subsubcategories.index" });
                         swal({
                             icon: "success",
                             title: "Category deleted successfully",

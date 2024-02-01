@@ -13,13 +13,34 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::all();
-
+        $orderColumn = request('order_column', 'created_at');
+        if (!in_array($orderColumn, ['id', 'name', 'created_at'])) {
+            $orderColumn = 'created_at';
+        }
+        $orderDirection = request('order_direction', 'desc');
+        if (!in_array($orderDirection, ['asc', 'desc'])) {
+            $orderDirection = 'desc';
+        }
+        $items = Item::when(request('search_id'), function ($query) {
+            $query->where('id', request('search_id'));
+        })
+            ->when(request('search_title'), function ($query) {
+                $query->where('name', 'like', '%' . request('search_title') . '%');
+            })
+            ->when(request('search_global'), function ($query) {
+                $query->where(function ($q) {
+                    $q->where('id', request('search_global'))
+                        ->orWhere('name', 'like', '%' . request('search_global') . '%');
+                });
+            })
+            ->orderBy($orderColumn, $orderDirection)
+            ->paginate(50);
         return ItemResource::collection($items);
     }
 
     public function show(Item $item)
     {
+        $this->authorize('item-edit');
         return new ItemResource($item);
     }
 
@@ -43,7 +64,8 @@ class ItemController extends Controller
 
     public function update(Item $item, StoreItemRequest $request)
     {
-        // Validate and update item
+        $this->authorize('item-edit');
+
         $validatedData = $request->validated();
 
         $category = Category::find($validatedData['cat_id']);
