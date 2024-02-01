@@ -90,7 +90,7 @@ defineRule('min', min);
 const { validate, errors } = useForm();
 
 const { value: name, errorMessage: nameError } = useField('name', 'required');
-const { value: parent_id, errorMessage: parentIdError } = useField('parent_id', 'required');
+
 const { value: discount, errorMessage: discountError } = useField('discount', 'min:0');
 
 const { storeCategory, validationErrors, isLoading, getCategoryList2, categoryList } = useCategories();
@@ -99,29 +99,29 @@ const category = ref({
     name: '',
     parent_id: null,
     discount: null,
-    level: 1
+    level: 0
 });
 
 onMounted(() => {
     getCategoryList2();
 });
+// Use ref for category.parent_id
+const parent_id = ref(category.value.parent_id);
 
 watchEffect(() => categoryList, (newCategoryList) => {
     parent_id.rules = newCategoryList.length ? 'required' : '';
 });
 
-
 watchEffect(() => {
-    logSelectedCategoryLevel(category.parent_id);
+    logSelectedCategoryLevel(parent_id.value);
 });
-
 
 function logSelectedCategoryLevel(selectedCategoryId) {
     const selectedCategory = categoryList.value.find(c => c.id === selectedCategoryId);
 
     if (selectedCategory) {
-        category.level = selectedCategory.level + 1; // top zero, so plus 1 = 1
-        console.log(`Selected Category Level: ${category.level}`);
+        category.value.level = selectedCategory.level + 1;
+        console.log(`Selected Category Level: ${category.value.level}`);
     }
 }
 
