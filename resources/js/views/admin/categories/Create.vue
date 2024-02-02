@@ -26,22 +26,6 @@
                         <!-- Parent ID -->
                         <input v-model="category.parent_id" id="parent-id" type="hidden" class="form-control">
 
-                        <!-- Discount -->
-                        <div class="mb-3">
-                            <label for="discount" class="form-label">
-                                Discount
-                            </label>
-                            <input v-model="category.discount" id="discount" type="text" class="form-control">
-                            <div class="text-danger mt-1">
-                                {{ errors.discount }}
-                            </div>
-                            <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.discount">
-                                    {{ message }}
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Buttons -->
                         <div class="mt-4">
                             <button :disabled="isLoading" class="btn btn-primary">

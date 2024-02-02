@@ -5,13 +5,13 @@
                 <li class="nav-item">
                     <router-link to="/admin" class="nav-link">
                         <span class="fs-4">📜</span>
-                        <span class="d-none d-sm-inline ps-2 text-black ">Dashboard</span>
+                        <span class="d-none d-sm-inline ps-2 text-black ">Menu Board</span>
                     </router-link>
                 </li>
                 <li v-if="can('user-list')" class="nav-item">
                     <a href="#submenu2" data-bs-toggle="collapse" class="nav-link">
                         👥
-                        <span class="d-none d-sm-inline ps-2 text-black ">User Manager</span>
+                        <span class="d-none d-sm-inline ps-2 text-black ">User Manager </span>
                     </a>
                     <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                         <li v-if="can('permission-list')" class="nav-link w-100">

@@ -47,23 +47,6 @@
                         <!-- Level -->
                         <input type="hidden" :value="category.level">
 
-
-                        <!-- Discount -->
-                        <div class="mb-3">
-                            <label for="discount" class="form-label">
-                                Discount
-                            </label>
-                            <input v-model="category.discount" id="discount" type="text" class="form-control">
-                            <div class="text-danger mt-1">
-                                {{ errors.discount }}
-                            </div>
-                            <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.discount">
-                                    {{ message }}
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Buttons -->
                         <div class="mt-4">
                             <button :disabled="isLoading" class="btn btn-primary">
@@ -131,7 +114,13 @@ function submitForm() {
         console.log(category.value);
         // validate().then((isValid) => {
         //     if (isValid) {
-        storeCategory(category.value);
+        if (category.value.level === 5) {
+            console.error("Subcategory level cannot be 5. Please choose a different parent category.");
+            return;
+        }
+        else {
+            storeCategory(category.value);
+        }
         //     }
         // });
     });

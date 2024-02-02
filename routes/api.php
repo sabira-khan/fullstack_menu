@@ -50,3 +50,4 @@ Route::get('category-cleaned', [CategoryController::class, 'getList2']);
 Route::get('item-list', [ItemController::class, 'getList']);
 Route::get('/subcategories', [CategoryController::class, 'getSubcategories']);
 Route::get('/item-parents', [CategoryController::class, 'getLastChildren']);
+Route::get('/menu', [CategoryController::class, 'getMenu']);

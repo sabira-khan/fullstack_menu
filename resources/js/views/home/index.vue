@@ -3,7 +3,7 @@
         class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-center pt-8 sm:text-gray-600 dark:text-gray-400 text-sm">
-                <h1>Lara - Menu</h1>
+                <h1>🍔 Fullstack Laravel Vue Menu</h1>
             </div>
         </div>
     </div>
@@ -399,4 +399,5 @@ video {
         color: #6b7280;
         color: rgba(107, 114, 128, var(--tw-text-opacity))
     }
-}</style>
+}
+</style>
