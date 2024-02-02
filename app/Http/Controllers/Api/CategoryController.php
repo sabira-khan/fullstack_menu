@@ -32,6 +32,7 @@ class CategoryController extends Controller
                         ->orWhere('name', 'like', '%' . request('search_global') . '%');
                 });
             })
+            ->where('level', '=', 0)
             ->orderBy($orderColumn, $orderDirection)
             ->paginate(50);
         return CategoryResource::collection($categories);
