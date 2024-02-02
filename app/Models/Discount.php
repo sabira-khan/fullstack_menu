@@ -9,15 +9,15 @@ class Discount extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'amount', 'type'];
+    protected $fillable = ['discount_value', 'type', 'category_id', 'item_id'];
 
-    public function categories()
+    public function category()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
-    public function items()
+    public function item()
     {
-        return $this->hasMany(Item::class);
+        return $this->belongsTo(Item::class);
     }
 }

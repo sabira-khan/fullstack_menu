@@ -46,7 +46,7 @@
                         <!-- Amount -->
                         <div class="mb-3">
                             <label for="amount" class="form-label">
-                                Amount
+                                Amount (KD)
                             </label>
                             <input v-model="item.amount" id="amount" type="text" class="form-control">
                             <div class="text-danger mt-1">

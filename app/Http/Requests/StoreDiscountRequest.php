@@ -22,9 +22,10 @@ class StoreDiscountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|min:0',
-            'type' => 'required|in: Menu,Category,Item',
+            'discount_value' => 'required|numeric',
+            'type' => 'required|in:Menu,Category,Item',
+            'category_id' => 'nullable|exists:categories,id',
+            'item_id' => 'nullable|exists:items,id',
         ];
     }
 }

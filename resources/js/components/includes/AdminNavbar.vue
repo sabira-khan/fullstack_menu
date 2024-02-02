@@ -1,8 +1,8 @@
 <template>
     <nav class="navbar navbar-expand-lg sticky-top flex-md-nowrap shadow-sm rounded-md" style="background-color: #FFFFFF;">
         <div class="container-fluid">
-            <router-link to="/" class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 nuxt-link-active mini">
-                <span><strong>LARAMENU</strong></span>
+            <router-link to="/" class="navbar-brand col-md-3 col-lg-2 me-0 px-3  fs-2 nuxt-link-active mini">
+                <span>🍔<strong>LARAMENU</strong></span>
             </router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

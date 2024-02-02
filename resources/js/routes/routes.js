@@ -129,20 +129,40 @@ export default [
                 name: "items.index",
                 path: "items",
                 component: () => import("../views/admin/items/Index.vue"),
-                meta: { breadCrumb: "Subcategories" },
+                meta: { breadCrumb: "Items" },
             },
             {
                 name: "items.create",
                 path: "items/create",
                 component: () => import("../views/admin/items/Create.vue"),
-                meta: { breadCrumb: "Add New Subcategory" },
+                meta: { breadCrumb: "Add New Item" },
             },
             {
                 name: "items.edit",
                 path: "items/edit/:id",
                 component: () =>
                     import("../views/admin/subcategories/Edit.vue"),
-                meta: { breadCrumb: "Edit Subcategory" },
+                meta: { breadCrumb: "Edit Item" },
+            },
+
+            {
+                name: "discounts.index",
+                path: "discounts",
+                component: () => import("../views/admin/discounts/Index.vue"),
+                meta: { breadCrumb: "Discounts" },
+            },
+            {
+                name: "discounts.create",
+                path: "discounts/create",
+                component: () => import("../views/admin/discounts/Create.vue"),
+                meta: { breadCrumb: "Add New Discount" },
+            },
+            {
+                name: "discounts.edit",
+                path: "discounts/edit/:id",
+                component: () =>
+                    import("../views/admin/subcategories/Edit.vue"),
+                meta: { breadCrumb: "Edit Discount" },
             },
             {
                 name: "permissions.index",

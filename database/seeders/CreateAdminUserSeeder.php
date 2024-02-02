@@ -28,8 +28,7 @@ class CreateAdminUserSeeder extends Seeder
         $role2 = Role::create(['name' => 'user']);
         $permissions = [];
         $role2->syncPermissions($permissions);
-        Category::create(['name' => 'Cat 1']);
-        Category::create(['name' => 'Cat 2']);
+
 
         $permissions = Permission::pluck('id', 'id')->all();
 

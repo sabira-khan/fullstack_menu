@@ -56,10 +56,18 @@ export default function useCategories() {
         axios
             .post("/api/categories", category)
             .then((response) => {
-                router.push({ name: "categories.index" });
+                // Determine the route based on the 'level' value
+                const routeName =
+                    response.data.level === 0
+                        ? "categories.index"
+                        : "subcategories.index";
+                const title =
+                    response.data.level === 0 ? "Category" : "Subcategory";
+
+                router.push({ name: routeName });
                 swal({
                     icon: "success",
-                    title: "Category saved successfully",
+                    title: `${title} saved successfully`,
                 });
             })
             .catch((error) => {

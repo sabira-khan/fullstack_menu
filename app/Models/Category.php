@@ -31,8 +31,15 @@ class Category extends Model
 
     public function getList()
     {
-        // Retrieve only leaf categories to add items
+        // Retrieve only leaf categories to add items or only leaf 
         $leafCategories = $this->isLeaf()->get();
+        return CategoryResource::collection($leafCategories);
+    }
+
+    public function getRecursiveSubcategories()
+    {
+        // Retrieve only leaf categories with items
+        $leafCategories = $this->descendants()->get();
         return CategoryResource::collection($leafCategories);
     }
 
