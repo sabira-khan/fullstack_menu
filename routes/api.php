@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/role-permissions', [PermissionController::class, 'updateRolePermissions']);
     Route::apiResource('permissions', PermissionController::class);
     Route::get('category-list', [CategoryController::class, 'getList']);
+    Route::get('category-cleaned', [CategoryController::class, 'getList2']);
     Route::get('item-list', [ItemController::class, 'itemList']);
     Route::get('/user', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
@@ -45,6 +46,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 });
 
 Route::get('category-list', [CategoryController::class, 'getList']);
+Route::get('category-cleaned', [CategoryController::class, 'getList2']);
 Route::get('item-list', [ItemController::class, 'getList']);
 Route::get('/subcategories', [CategoryController::class, 'getSubcategories']);
 Route::get('/item-parents', [CategoryController::class, 'getLastChildren']);

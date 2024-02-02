@@ -95,6 +95,16 @@ class CategoryController extends Controller
         return CategoryResource::collection(Category::all());
     }
 
+    public function getList2()
+    {
+        // Retrieve categories without items
+        $categoriesWithoutItems = Category::doesntHave('items')->get();
+
+        return CategoryResource::collection($categoriesWithoutItems);
+    }
+
+
+
     public function getSubcategories()
     {
         $orderColumn = request('order_column', 'created_at');

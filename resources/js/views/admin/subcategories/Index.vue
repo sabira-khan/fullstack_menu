@@ -71,6 +71,25 @@
                                             </div>
                                         </div>
                                     </th>
+                                    <th class="px-6 py-3 text-left">
+                                        <div class="flex flex-row" @click="updateOrdering('level')" style="display: flex;">
+                                            <div class="font-medium"
+                                                :class="{ 'font-bold text-blue-600': orderColumn === 'title' }">
+                                                Level
+                                            </div>
+                                            &nbsp;
+                                            <div class="select-none">
+                                                <span :class="{
+                                                    'text-blue-600': orderDirection === 'asc' && orderColumn === 'title',
+                                                    'hidden': orderDirection !== '' && orderDirection !== 'asc' && orderColumn === 'title',
+                                                }">&uarr;</span>
+                                                <span :class="{
+                                                    'text-blue-600': orderDirection === 'desc' && orderColumn === 'title',
+                                                    'hidden': orderDirection !== '' && orderDirection !== 'desc' && orderColumn === 'title',
+                                                }">&darr;</span>
+                                            </div>
+                                        </div>
+                                    </th>
                                     <th class="px-6 py-3 bg-gray-50 text-left">
                                         <div class="flex flex-row items-center justify-between cursor-pointer"
                                             style="display: flex;" @click="updateOrdering('created_at')">
@@ -103,6 +122,9 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm">
                                         {{ post.name }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm">
+                                        {{ post.level }}
                                     </td>
                                     <td class="px-6 py-4 text-sm">
                                         {{ post.created_at }}

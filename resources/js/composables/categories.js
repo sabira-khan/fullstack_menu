@@ -175,7 +175,7 @@ export default function useCategories() {
 
     const getCategoryList2 = async () => {
         try {
-            const response = await axios.get("/api/category-list");
+            const response = await axios.get("/api/category-cleaned");
             categoryList.value = response.data.data;
         } catch (error) {
             console.error("Error fetching category list:", error);
