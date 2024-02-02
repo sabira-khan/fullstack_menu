@@ -65,7 +65,7 @@
                 <li v-if="can('item-list')" class="nav-item">
                     <router-link :to="{ name: 'discounts.index' }" class="nav-link">
                         <span class="fs-4">💲</span>
-                        <span class="d-none d-sm-inline text-black ">Discount</span>
+                        <span class="d-none d-sm-inline text-black ">Discounts</span>
                     </router-link>
                 </li>
             </ul>
@@ -78,4 +78,13 @@ import { useAbility } from '@casl/vue'
 const { can } = useAbility();
 </script>
 
-<style scoped></style>
+<style scoped>
+.nav-link:hover {
+    font-weight: bold;
+}
+
+.router-link-exact-active {
+    background-color: #e0f0ff;
+    font-weight: 700;
+}
+</style>

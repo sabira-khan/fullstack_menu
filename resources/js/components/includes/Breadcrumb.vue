@@ -1,5 +1,5 @@
 <template>
-  <nav class="mx-2">
+  <nav class="mx-1">
     <ol class="breadcrumb border-radius-2 p-2">
       <li v-for="(crumb, ci) in crumbs" :key="ci" class="breadcrumb-item align-items-center">
         <router-link :to="crumb.href" class="btn btn-link" :class="{ disabled: isLast(ci) }" @click="selected(crumb)">

@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-center my-2">
+    <div class="row justify-content-center my-2 mx-1">
         <div class="col-md-12">
             <div class="card border-0">
                 <div class="card-header bg-transparent">
