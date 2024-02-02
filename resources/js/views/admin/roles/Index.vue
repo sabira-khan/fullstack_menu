@@ -98,7 +98,7 @@
                                         {{ post.name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm">
-                                        {{ post.created_at }}
+                                        {{ new Date(post.created_at).toLocaleString() }}
                                     </td>
                                     <td class="px-6 py-4 text-sm">
                                         <router-link v-if="can('role-edit')"
