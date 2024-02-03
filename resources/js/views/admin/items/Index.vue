@@ -68,6 +68,14 @@
                                             </div>
                                         </div>
                                     </th>
+                                    <th class="px-6 py-3 text-left">
+                                        <div class="flex flex-row" style="display: flex;">
+                                            <div class="font-medium"
+                                                :class="{ 'font-bold text-blue-600': orderColumn === 'title' }">
+                                                Price (KD)
+                                            </div>
+                                        </div>
+                                    </th>
                                     <th class="px-6 py-3 bg-gray-50 text-left">
                                         <div class="flex flex-row items-center justify-between cursor-pointer"
                                             style="display: flex;" @click="updateOrdering('created_at')">
@@ -100,6 +108,9 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm">
                                         {{ post.name }}
+                                    </td>
+                                    <td class="px-6 py-4 text-sm">
+                                        {{ post.amount }}
                                     </td>
                                     <td class="px-6 py-4 text-sm">
                                         {{ new Date(post.created_at).toLocaleString() }}

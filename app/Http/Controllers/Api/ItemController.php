@@ -50,9 +50,9 @@ class ItemController extends Controller
         // Validate and create item
         $validatedData = $request->validated();
 
-        $category = Category::find($validatedData['cat_id']);
+        // $category = Category::find($validatedData['cat_id']);
 
-        // Check if the category has children of the Category model
+        // // Check if the category has children of the Category model
         // if ($category && $category->children()->exists()) {
         //     return response()->json(['error' => 'Cannot create an item under a category with Category children.'], 422);
         // }

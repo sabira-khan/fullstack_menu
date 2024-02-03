@@ -140,8 +140,7 @@ export default [
             {
                 name: "items.edit",
                 path: "items/edit/:id",
-                component: () =>
-                    import("../views/admin/subcategories/Edit.vue"),
+                component: () => import("../views/admin/items/Edit.vue"),
                 meta: { breadCrumb: "Edit Item" },
             },
 
