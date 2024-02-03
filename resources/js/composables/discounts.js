@@ -119,7 +119,6 @@ export default function useDiscounts() {
                     .delete("/api/discounts/" + id)
                     .then((response) => {
                         if (response.data && response.data.message) {
-                            // Success: Discount deleted successfully
                             getDiscounts();
                             router.push({ name: "discounts.index" });
                             swal({
@@ -127,7 +126,6 @@ export default function useDiscounts() {
                                 title: response.data.message,
                             });
                         } else {
-                            // Unexpected response structure
                             swal({
                                 icon: "error",
                                 title: "Unexpected response from the server",
@@ -140,13 +138,11 @@ export default function useDiscounts() {
                             error.response.data &&
                             error.response.data.error
                         ) {
-                            // Error: Something went wrong
                             swal({
                                 icon: "error",
                                 title: error.response.data.error,
                             });
                         } else {
-                            // Generic error handling
                             swal({
                                 icon: "error",
                                 title: "Something went wrong",

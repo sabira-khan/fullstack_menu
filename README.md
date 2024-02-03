@@ -34,3 +34,25 @@ Let’s build a restaurant menu that contains categories, subcategories, and ite
 -   [Bundle Analyzer Screenshot Link](https://res.cloudinary.com/saboora/image/upload/v1706883627/Screenshot_1188_k00prb.png) Will improve
 -   Authentication (Each user has own menu)
 -   Dummy SQL added to replicate photo menu
+
+## Instructions of use:
+
+-   Login using admin creds (admin@admin.com - 12345678).
+-   Create a category first (ie. breakfast, dinner etc).
+-   Create sucategories underneath (in each case, choose parent category, max level of subcategories under a category is 4).
+-   Create items under leaf categories (items can only be created if parent category doesn't have any direct Category child at same level).
+-   Create discounts to return discounted pricing for menu frontend
+-   Full menu discount is applied to all items.
+-   Category/Subcategory level discount is inherited by items if there's no existing discount.
+-   Discount can be directly applied to a single item too.
+
+## Instructions of setup:
+
+-   git clone repo
+-   composer install
+-   npm install
+-   copy the .env.example file to create a .env file with your details
+-   php artisan key:generate
+-   php artisan migrate --seed
+-   php artisan serve
+-   npm run dev
