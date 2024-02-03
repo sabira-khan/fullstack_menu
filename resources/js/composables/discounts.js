@@ -52,6 +52,7 @@ export default function useDiscounts() {
     const getDiscount = async (id) => {
         axios.get("/api/discounts/" + id).then((response) => {
             discount.value = response.data.data;
+            console.log("test" + discount.value);
         });
     };
 
@@ -117,18 +118,40 @@ export default function useDiscounts() {
                 axios
                     .delete("/api/discounts/" + id)
                     .then((response) => {
-                        getDiscounts();
-                        router.push({ name: "discounts.index" });
-                        swal({
-                            icon: "success",
-                            title: "Discount deleted successfully",
-                        });
+                        if (response.data && response.data.message) {
+                            // Success: Discount deleted successfully
+                            getDiscounts();
+                            router.push({ name: "discounts.index" });
+                            swal({
+                                icon: "success",
+                                title: response.data.message,
+                            });
+                        } else {
+                            // Unexpected response structure
+                            swal({
+                                icon: "error",
+                                title: "Unexpected response from the server",
+                            });
+                        }
                     })
                     .catch((error) => {
-                        swal({
-                            icon: "error",
-                            title: "Something went wrong",
-                        });
+                        if (
+                            error.response &&
+                            error.response.data &&
+                            error.response.data.error
+                        ) {
+                            // Error: Something went wrong
+                            swal({
+                                icon: "error",
+                                title: error.response.data.error,
+                            });
+                        } else {
+                            // Generic error handling
+                            swal({
+                                icon: "error",
+                                title: "Something went wrong",
+                            });
+                        }
                     });
             }
         });

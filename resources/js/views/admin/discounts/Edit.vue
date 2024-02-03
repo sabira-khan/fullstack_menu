@@ -4,29 +4,49 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <form @submit.prevent="submitForm">
-                        <!-- Title -->
+                        <!-- type -->
                         <div class="mb-3">
-                            <label for="category-name" class="form-label">
-                                Category Title *
+                            <label for="discount-type" class="form-label">
+                                Discount type *
                             </label>
-                            <input v-model="category.name" id="category-name" type="text" class="form-control">
+                            <input v-model="discount.type" id="discount-type" type="text" class="form-control" disabled>
                             <div class="text-danger mt-1">
-                                {{ errors.name }}
+                                {{ errors.type }}
                             </div>
                             <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.name">
+                                <div v-for="message in validationErrors?.type">
                                     {{ message }}
                                 </div>
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="discount-discount_value" class="form-label">
+                                Discount Amount *
+                            </label>
+                            <input v-model="discount.discount_value" id="discount-discount_value" type="number"
+                                class="form-control" disabled>
+                            <div class="text-danger mt-1">
+                                {{ errors.discount_value }}
+                            </div>
+                            <div class="text-danger mt-1">
+                                <div v-for="message in validationErrors?.type">
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Buttons -->
                         <div class="mt-4">
-                            <button :disabled="isLoading" class="btn btn-primary">
+                            <button :disabled="isLoading" class="btn btn-primary me-2 d-none">
                                 <div v-show="isLoading" class=""></div>
                                 <span v-if="isLoading">Processing...</span>
                                 <span v-else>Save</span>
+                            </button>
+                            <button :disabled="isLoading" class="btn btn-primary" @click="goBack">
+                                <div v-show="isLoading" class=""></div>
+                                <span v-if="isLoading">Processing...</span>
+                                <span v-else>Back</span>
                             </button>
                         </div>
                     </form>
@@ -37,8 +57,8 @@
 </template>
 <script setup>
 import { onMounted, reactive, watchEffect } from "vue";
-import { useRoute } from "vue-router";
-import useCategories from "../../../composables/categories";
+import { useRoute, useRouter } from "vue-router";
+import useDiscounts from "../../../composables/discounts";
 import { useForm, useField, defineRule } from "vee-validate";
 import { required, min } from "@/validation/rules";
 
@@ -46,40 +66,45 @@ defineRule('required', required);
 defineRule('min', min);
 
 const schema = {
-    name: 'required|min:3',
+    type: 'required|min:3',
     discount: 'min:0'
 };
 
 const { validate, errors, resetForm } = useForm({ validationSchema: schema });
 
-const { value: name } = useField('name', null, { initialValue: '' });
-const { value: discount } = useField('discount', null, { initialValue: null });
-const { category: postData, getCategory, updateCategory, validationErrors, isLoading } = useCategories();
+const { value: type } = useField('type', null, { initialValue: '' });
+const { value: discount_value } = useField('discount', null, { initialValue: null });
+const { discount: postData, getDiscount, updateDiscount, validationErrors, isLoading } = useDiscounts();
 
-const category = reactive({
-    name,
-    discount
+const discount = reactive({
+    type,
+    discount_value
 });
 
 const route = useRoute();
+const router = useRouter();
 
 function submitForm() {
     validate().then(form => {
         if (form.valid) {
-            updateCategory(category);
+            updateDiscount(discount_value);
         }
     });
 }
 
+function goBack() {
+    router.go(-1);
+}
+
 onMounted(() => {
-    getCategory(route.params.id);
+    getDiscount(route.params.id);
 });
 
-// Watch for changes in the postData and update the category accordingly
+// Watch for changes in the postData and update the discount accordingly
 watchEffect(() => {
-    category.id = postData.value.id;
-    category.name = postData.value.name;
-    category.discount = postData.value.discount;
+    discount.id = postData.value.id;
+    discount.type = postData.value.type;
+    discount.discount_value = postData.value.discount_value;
 });
 </script>
 

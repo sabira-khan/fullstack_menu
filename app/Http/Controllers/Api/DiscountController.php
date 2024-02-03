@@ -6,11 +6,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Item;
 use App\Models\Category;
 use App\Models\Discount;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DiscountResource;
 use App\Http\Requests\StoreDiscountRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DiscountController extends Controller
 {
@@ -144,8 +145,33 @@ class DiscountController extends Controller
     public function destroy(Discount $discount)
     {
         $this->authorize('discount-delete');
-        $discount->delete();
 
-        return response()->noContent();
+        try {
+            $itemId = $discount->item_id;
+            $categoryId = $discount->category_id;
+
+            if (!is_null($itemId)) {
+                // If item_id is set, find the corresponding item and update its discount_id
+                $item = Item::find($itemId);
+                if ($item) {
+                    $item->update(['discount_id' => null]);
+                }
+            } elseif (!is_null($categoryId)) {
+                // If category_id is set, find the corresponding category and update its discount_id
+                $category = Category::find($categoryId);
+                if ($category) {
+                    $category->update(['discount_id' => null]);
+                }
+            }
+
+            // Delete the discount
+            $discount->delete();
+
+            // Provide a success response
+            return response()->json(['message' => 'Discount deleted successfully'], 200);
+        } catch (\Exception $e) {
+            // Provide an error response if an exception occurs
+            return response()->json(['error' => 'Failed to delete discount'], 500);
+        }
     }
 }

@@ -107,7 +107,7 @@
                                     <td class="px-6 py-4 text-sm">
                                         <router-link v-if="can('discount-edit')"
                                             :to="{ name: 'discounts.edit', params: { id: post.id } }"
-                                            class="badge bg-primary">Edit
+                                            class="badge bg-info">View
                                         </router-link>
                                         <a href="#" v-if="can('discount-delete')" @click.prevent="deleteDiscount(post.id)"
                                             class="ms-2 badge bg-danger">Delete</a>

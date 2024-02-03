@@ -159,8 +159,7 @@ export default [
             {
                 name: "discounts.edit",
                 path: "discounts/edit/:id",
-                component: () =>
-                    import("../views/admin/subcategories/Edit.vue"),
+                component: () => import("../views/admin/discounts/Edit.vue"),
                 meta: { breadCrumb: "Edit Discount" },
             },
             {
