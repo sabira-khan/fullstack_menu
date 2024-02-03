@@ -44,6 +44,7 @@ export default function useCategories() {
     const getCategory = async (id) => {
         axios.get("/api/categories/" + id).then((response) => {
             category.value = response.data.data;
+            console.log(category.value);
         });
     };
 
@@ -56,18 +57,33 @@ export default function useCategories() {
         axios
             .post("/api/categories", category)
             .then((response) => {
-                // Determine the route based on the 'level' value
-                const routeName =
-                    response.data.level === 0
-                        ? "categories.index"
-                        : "subcategories.index";
-                const title =
-                    response.data.level === 0 ? "Category" : "Subcategory";
-
-                router.push({ name: routeName });
+                router.push({ name: "categories.index" });
                 swal({
                     icon: "success",
-                    title: `${title} saved successfully`,
+                    title: "Category Creation Successful!",
+                });
+            })
+            .catch((error) => {
+                if (error.response?.data) {
+                    validationErrors.value = error.response.data.errors;
+                }
+            })
+            .finally(() => (isLoading.value = false));
+    };
+
+    const storeSubCategory = async (category) => {
+        if (isLoading.value) return;
+
+        isLoading.value = true;
+        validationErrors.value = {};
+
+        axios
+            .post("/api/categories", category)
+            .then((response) => {
+                router.push({ name: "subcategories.index" });
+                swal({
+                    icon: "success",
+                    title: "Subcategory Creation Successful!",
                 });
             })
             .catch((error) => {
@@ -101,6 +117,29 @@ export default function useCategories() {
             .finally(() => (isLoading.value = false));
     };
 
+    const updateSubCategory = async (category) => {
+        if (isLoading.value) return;
+
+        isLoading.value = true;
+        validationErrors.value = {};
+
+        axios
+            .put("/api/categories/" + category.id, category)
+            .then((response) => {
+                router.push({ name: "subcategories.index" });
+                swal({
+                    icon: "success",
+                    title: "Subcategory updated successfully!",
+                });
+            })
+            .catch((error) => {
+                if (error.response?.data) {
+                    validationErrors.value = error.response.data.errors;
+                }
+            })
+            .finally(() => (isLoading.value = false));
+    };
+
     const deleteCategory = async (id) => {
         swal({
             title: "Are you sure?",
@@ -117,51 +156,34 @@ export default function useCategories() {
                 axios
                     .delete("/api/categories/" + id)
                     .then((response) => {
-                        getCategories();
-                        router.push({ name: "categories.index" });
-                        swal({
-                            icon: "success",
-                            title: "Category deleted successfully",
-                        });
+                        if (response.status === 204) {
+                            getCategories();
+                            router.push({ name: "categories.index" });
+                            swal({
+                                icon: "success",
+                                title: "Category deleted successfully",
+                            });
+                        } else {
+                            swal({
+                                icon: "error",
+                                title: "Something went wrong",
+                            });
+                        }
                     })
                     .catch((error) => {
-                        swal({
-                            icon: "error",
-                            title: "Something went wrong",
-                        });
-                    });
-            }
-        });
-    };
-
-    const deleteSubcategory = async (id) => {
-        swal({
-            title: "Are you sure?",
-            text: "You won't be able to revert this action!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            confirmButtonColor: "#ef4444",
-            timer: 20000,
-            timerProgressBar: true,
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios
-                    .delete("/api/categories/" + id)
-                    .then((response) => {
-                        getCategories();
-                        router.push({ name: "categories.index" });
-                        swal({
-                            icon: "success",
-                            title: "Category deleted successfully",
-                        });
-                    })
-                    .catch((error) => {
-                        swal({
-                            icon: "error",
-                            title: "Something went wrong",
-                        });
+                        // Handle specific error response from the server
+                        if (error.response?.data?.error) {
+                            swal({
+                                icon: "error",
+                                title: error.response.data.error,
+                            });
+                        } else {
+                            // Handle other errors
+                            swal({
+                                icon: "error",
+                                title: "Something went wrong",
+                            });
+                        }
                     });
             }
         });
@@ -192,9 +214,10 @@ export default function useCategories() {
         getCategoryList2,
         getCategory,
         storeCategory,
+        storeSubCategory,
         updateCategory,
+        updateSubCategory,
         deleteCategory,
-        deleteSubcategory,
         validationErrors,
         isLoading,
     };

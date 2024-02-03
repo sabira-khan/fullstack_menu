@@ -134,8 +134,7 @@
                                             :to="{ name: 'subcategories.edit', params: { id: post.id } }"
                                             class="badge bg-primary">Edit
                                         </router-link>
-                                        <a href="#" v-if="can('category-delete')"
-                                            @click.prevent="deleteSubcategory(post.id)"
+                                        <a href="#" v-if="can('category-delete')" @click.prevent="deleteCategory(post.id)"
                                             class="ms-2 badge bg-danger">Delete</a>
                                     </td>
                                 </tr>
@@ -163,7 +162,7 @@ const search_title = ref('')
 const search_global = ref('')
 const orderColumn = ref('created_at')
 const orderDirection = ref('desc')
-const { categories, getCategories, deleteSubcategory } = useCategories()
+const { categories, getCategories, deleteCategory } = useCategories()
 const { can } = useAbility()
 onMounted(() => {
     getCategories()

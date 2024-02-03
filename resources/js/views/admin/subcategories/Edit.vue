@@ -4,6 +4,26 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <form @submit.prevent="submitForm">
+                        <div class="mb-3">
+                            <label for="parent-category" class="form-label">
+                                Parent Category *
+                            </label>
+                            <select v-model="category.parent_id" id="parent-category" class="form-select" disabled
+                                @change="logSelectedCategoryLevel(category.parent_id)">
+                                <option value="" disabled>Select Parent Category</option>
+                                <option v-for="parentCategory in categoryList" :value="parentCategory.id"
+                                    :key="parentCategory.id">
+                                    {{ parentCategory.name }}
+                                </option>
+                            </select>
+                            <div class="text-danger mt-1">{{ errors.parent_id }}</div>
+                            <div class="text-danger mt-1">
+                                <div v-for="message in validationErrors?.parent_id">
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Title -->
                         <div class="mb-3">
                             <label for="category-name" class="form-label">
@@ -14,54 +34,13 @@
                                 {{ errors.name }}
                             </div>
                             <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.name" :key="message">
+                                <div v-for="message in validationErrors?.name">
                                     {{ message }}
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Parent Category Dropdown -->
-                        <div class="mb-3">
-                            <label for="parent-category" class="form-label">
-                                Parent Category *
-                            </label>
-                            <select v-model="category.parent_id" id="parent-category" class="form-select">
-                                <option value="" disabled>Select Parent Category</option>
-                                <option v-for="parentCategory in categoryList" :value="parentCategory.id"
-                                    :data-level="parentCategory.level" :key="parentCategory.id">
-                                    {{ parentCategory.name }}
-                                </option>
-                            </select>
-                            <div class="text-danger mt-1">
-                                {{ errors.parent_id }}
-                            </div>
-                            <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.parent_id" :key="message">
-                                    {{ message }}
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Level -->
-                        <input type="hidden"
-                            :value="category.parent_id ? (categoryList.find(c => c.id === category.parent_id)?.level || 0) + 1 : 0">
-
-                        <!-- Discount -->
-                        <div class="mb-3">
-                            <label for="discount" class="form-label">
-                                Discount
-                            </label>
-                            <input v-model="category.discount" id="discount" type="text" class="form-control">
-                            <div class="text-danger mt-1">
-                                {{ errors.discount }}
-                            </div>
-                            <div class="text-danger mt-1">
-                                <div v-for="message in validationErrors?.discount" :key="message">
-                                    {{ message }}
-                                </div>
-                            </div>
-                        </div>
-
+                        <input type="hidden" :value="category.level">
                         <!-- Buttons -->
                         <div class="mt-4">
                             <button :disabled="isLoading" class="btn btn-primary">
@@ -76,9 +55,6 @@
         </div>
     </div>
 </template>
-
-
-
 <script setup>
 import { onMounted, reactive, watchEffect } from "vue";
 import { useRoute } from "vue-router";
@@ -91,17 +67,22 @@ defineRule('min', min);
 
 const schema = {
     name: 'required|min:3',
-    discount: 'min:0'
+    discount: 'min:0',
+    level: 'min:0',
 };
 
 const { validate, errors, resetForm } = useForm({ validationSchema: schema });
 
 const { value: name } = useField('name', null, { initialValue: '' });
 const { value: discount } = useField('discount', null, { initialValue: null });
-const { category: postData, getCategory, updateCategory, getCategoryList2, validationErrors, isLoading } = useCategories();
+const { value: level } = useField('level', 0, { initialValue: 0 });
+const { value: parent_id } = useField('parent_id', null, { initialValue: null });
+const { category: postData, getCategory, updateSubCategory, getCategoryList2, validationErrors, isLoading, categoryList } = useCategories();
 
 const category = reactive({
     name,
+    level,
+    parent_id,
     discount
 });
 
@@ -110,7 +91,7 @@ const route = useRoute();
 function submitForm() {
     validate().then(form => {
         if (form.valid) {
-            updateCategory(category);
+            updateSubCategory(category);
         }
     });
 }
@@ -120,12 +101,16 @@ onMounted(() => {
     getCategoryList2();
 });
 
+
 // Watch for changes in the postData and update the category accordingly
 watchEffect(() => {
     category.id = postData.value.id;
     category.name = postData.value.name;
-    category.discount = postData.value.discount;
+    category.level = postData.value.level;
     category.parent_id = postData.value.parent_id;
+
 });
+
+
 </script>
 

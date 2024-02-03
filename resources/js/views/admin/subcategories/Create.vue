@@ -77,7 +77,7 @@ const { value: name, errorMessage: nameError } = useField('name', 'required');
 
 const { value: discount, errorMessage: discountError } = useField('discount', 'min:0');
 
-const { storeCategory, validationErrors, isLoading, getCategoryList2, categoryList } = useCategories();
+const { storeSubCategory, validationErrors, isLoading, getCategoryList2, categoryList } = useCategories();
 
 const category = ref({
     name: '',
@@ -119,7 +119,7 @@ function submitForm() {
             return;
         }
         else {
-            storeCategory(category.value);
+            storeSubCategory(category.value);
         }
         //     }
         // });

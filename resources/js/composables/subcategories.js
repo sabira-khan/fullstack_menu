@@ -107,20 +107,36 @@ export default function useCategories() {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .delete("/api/subcategories/" + id)
+                    .delete("/api/categories/" + id)
                     .then((response) => {
-                        getCategories();
-                        router.push({ name: "subcategories.index" });
-                        swal({
-                            icon: "success",
-                            title: "Category deleted successfully",
-                        });
+                        if (response.status === 204) {
+                            getCategories();
+                            router.push({ name: "subcategories.index" });
+                            swal({
+                                icon: "success",
+                                title: "Subcategory deleted successfully",
+                            });
+                        } else {
+                            swal({
+                                icon: "error",
+                                title: "Something went wrong",
+                            });
+                        }
                     })
                     .catch((error) => {
-                        swal({
-                            icon: "error",
-                            title: "Something went wrong",
-                        });
+                        // Handle specific error response from the server
+                        if (error.response?.data?.error) {
+                            swal({
+                                icon: "error",
+                                title: error.response.data.error,
+                            });
+                        } else {
+                            // Handle other errors
+                            swal({
+                                icon: "error",
+                                title: "Something went wrong",
+                            });
+                        }
                     });
             }
         });
@@ -146,7 +162,7 @@ export default function useCategories() {
                         router.push({ name: "subsubcategories.index" });
                         swal({
                             icon: "success",
-                            title: "Category deleted successfully",
+                            title: "SubCategory deleted successfully",
                         });
                     })
                     .catch((error) => {

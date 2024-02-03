@@ -85,10 +85,17 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $this->authorize('category-delete');
-        $category->delete();
 
-        return response()->noContent();
+        // Check if it's a leaf category (no children) and has no items
+        if ($category->isLeaf() && !$category->items()->exists()) {
+            $category->delete();
+
+            return response()->noContent();
+        }
+
+        return response()->json(['error' => 'Deletion unsuccessful! Entity must be a leaf category with no items.'], 422);
     }
+
 
     public function getList()
     {
